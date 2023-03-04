@@ -3,10 +3,13 @@
 import Image from "next/image";
 import {
   Box,
+  Stack,
   Button,
   Container,
   ImageList,
   ImageListItem,
+  ImageListItemBar,
+  TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 // import styles from './page.module.css'
@@ -38,29 +41,55 @@ export default function Home() {
 
   return (
     <main>
-      <Container maxWidth="lg" sx={{ height: "100vh", display: "flex" }}>
-        <Box sx={{ bgcolor: "#cfe8fc", width: "100%", display: "flex" }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          p: 2,
+        }}
+      >
+        <Container>
+          <TextField
+            id="outlined-basic"
+            label="Search Pokemon..."
+            variant="outlined"
+          />
+        </Container>
+        <Container>
           <ImageList
             sx={{ width: "100%", height: "100%" }}
-            cols={3}
-            rowHeight={164}
+            cols={4}
+            rowHeight={240}
           >
             {!pokemons
               ? "loadings..."
               : pokemons.results.map((item, idx) => (
-                  <ImageListItem key={item.img}>
-                    <img
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
-                        idx + 1
-                      }.png`}
-                      // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                      alt={item.name}
-                      loading="lazy"
-                    />
-                  </ImageListItem>
+                  <a key={item.name} href={`/pokemon/${idx + 1}`}>
+                    <ImageListItem>
+                      <img
+                        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
+                          idx + 1
+                        }.png`}
+                        // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                        alt={item.name}
+                        loading="lazy"
+                        width={100}
+                        height={100}
+                        style={{ maxHeight: "100%", objectFit: "contain" }}
+                      />
+                      <ImageListItemBar
+                        title={item.name}
+                        sx={{
+                          textTransform: "capitalize",
+                        }}
+                      />
+                    </ImageListItem>
+                  </a>
                 ))}
           </ImageList>
-        </Box>
+        </Container>
       </Container>
     </main>
   );
