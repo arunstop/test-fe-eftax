@@ -58,7 +58,7 @@ export function usePokemonSearch() {
         status: "empty",
         data: null,
       });
-    const pokemon = (await loadPokemon.json()) as unknown;
+    const pokemon = (await loadPokemon.json()) as unknown as any;
     setResult({
       status: "success",
       data: {
