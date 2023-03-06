@@ -14,10 +14,8 @@ export interface TPokemonListDisplay {
   url: string;
 }
 
-export default function usePokemon() {
+export function usePokemon() {
   const [pokemons, setPokemons] = useState<TPokemonList | null>();
-  const [result, setResult] = useState<TPokemonListDisplay | null>();
-  const [keyword, setKeyword] = useState("");
 
   const loadData = async () => {
     const loadPokemons = await fetch("https://pokeapi.co/api/v2/pokemon");
@@ -28,21 +26,55 @@ export default function usePokemon() {
     setPokemons(newPokemons);
   };
 
-  const searchPokemon = async (keyword: string) => {
-    const kw = keyword.toLowerCase().trim();
-    const loadPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${kw}`);
-
-    if (!loadPokemon.ok) return setResult(null);
-    setResult({
-      name: kw,
-      url: `/pokemon/${kw}`,
-    });
-  };
-
   useEffect(() => {
     loadData();
     return () => {};
   }, []);
 
-  return { pokemons, setPokemons, keyword, setKeyword, result, searchPokemon };
+  return { pokemons, setPokemons };
+}
+
+export function usePokemonSearch() {
+  const [result, setResult] = useState<{
+    status: "init" | "empty" | "success";
+    data: (TPokemonListDisplay & { id: number }) | null;
+  }>({
+    status: "init",
+    data: null,
+  });
+  const [keyword, setKeyword] = useState("");
+
+  const searchPokemon = async (keyword: string) => {
+    const kw = keyword.toLowerCase().trim();
+    if (!kw)
+      return setResult({
+        status: "empty",
+        data: null,
+      });
+    const loadPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${kw}`);
+
+    if (!loadPokemon.ok)
+      return setResult({
+        status: "empty",
+        data: null,
+      });
+    const pokemon = (await loadPokemon.json()) as unknown;
+    setResult({
+      status: "success",
+      data: {
+        id: pokemon.id,
+        name: kw,
+        url: `/pokemon/${kw}`,
+      },
+    });
+  };
+
+  const clearSearch = () => {
+    setResult({
+      status: "init",
+      data: null,
+    });
+    setKeyword("");
+  };
+  return { keyword, setKeyword, result, setResult, searchPokemon, clearSearch };
 }
