@@ -13,7 +13,7 @@ export default function CustomChip({
       label={label}
       onDelete={suffix ? () => {} : undefined}
       style={{ textTransform: "capitalize" }}
-      deleteIcon={suffix || undefined}
+      deleteIcon={suffix ? <>suffix</> : undefined}
     />
   );
 }
