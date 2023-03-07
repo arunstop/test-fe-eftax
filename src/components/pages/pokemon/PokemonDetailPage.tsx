@@ -23,6 +23,7 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
           <Grid item xs={12} sx={{ placeItems: "center", display: "grid" }}>
             <img
               src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${pokemon.id}.png`}
+              alt={pokemon.name}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
