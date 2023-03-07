@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import CustomChip from "@/components/common/CustomChip";
-import Header from "../../common/Header.tsx";
+import Header from "@/components/common/Header";
 
 export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
   return (
@@ -69,7 +69,6 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
               />
               {pokemon.stats.map((e) => (
                 <CustomChip
-                  label="Base Experience"
                   key={e.stat.name}
                   label={e.stat.name.replaceAll("-", " ")}
                   suffix={
