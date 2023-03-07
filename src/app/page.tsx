@@ -11,12 +11,13 @@ import {
   ImageListItemBar,
   TextField,
   Grid,
+  Pagination,
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { usePokemon, usePokemonSearch } from "./hooks/pokemon-hook";
 
 export default function Home() {
-  const { pokemons } = usePokemon();
+  const { pokemons, pagination, changePage } = usePokemon();
   const { keyword, result, setResult, setKeyword, searchPokemon, clearSearch } =
     usePokemonSearch();
 
@@ -96,31 +97,49 @@ export default function Home() {
                     Loading pokemon...
                   </Grid>
                 ) : (
-                  pokemons.results.map((item, idx) => (
-                    <Grid key={item.name} item xs={6} sm={4} md={3} lg={2}>
-                      <a href={`/pokemon/${item.name}`}>
-                        <ImageListItem>
-                          <img
-                            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
-                              idx + 1
-                            }.png`}
-                            // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                            alt={item.name}
-                            loading="lazy"
-                            width={100}
-                            height={100}
-                            style={{ maxHeight: "100%", objectFit: "contain" }}
-                          />
-                          <ImageListItemBar
-                            title={item.name}
-                            sx={{
-                              textTransform: "capitalize",
-                            }}
-                          />
-                        </ImageListItem>
-                      </a>
-                    </Grid>
-                  ))
+                  <>
+                    {pokemons.results.map((item, idx) => (
+                      <Grid key={item.name} item xs={6} sm={4} md={3} lg={2}>
+                        <a href={`/pokemon/${item.name}`}>
+                          <ImageListItem>
+                            <img
+                              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
+                                idx + pagination.offset + 1
+                              }.png`}
+                              // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                              alt={item.name}
+                              loading="lazy"
+                              width={100}
+                              height={100}
+                              style={{
+                                maxHeight: "100%",
+                                objectFit: "contain",
+                              }}
+                            />
+                            <ImageListItemBar
+                              title={item.name}
+                              sx={{
+                                textTransform: "capitalize",
+                              }}
+                            />
+                          </ImageListItem>
+                        </a>
+                      </Grid>
+                    ))}
+                    {!!pagination.total && (
+                      <Grid
+                        item
+                        xs={12}
+                        sx={{ display: "grid", placeItems: "center" }}
+                      >
+                        <Pagination
+                          count={Math.ceil(pagination.total / pagination.limit)}
+                          defaultPage={Math.ceil(0 / 20 + 1)}
+                          onChange={changePage}
+                        />
+                      </Grid>
+                    )}
+                  </>
                 )}
               </>
             )}
