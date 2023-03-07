@@ -41,6 +41,16 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
               <h2>Stats</h2>
             </Grid>
             <Box sx={{ gap: "4px", display: "flex", flexWrap: "wrap" }}>
+              {pokemon.types.map((e) => (
+                <Grid
+                  key={e.type.name}
+                  item
+                  xs={12}
+                  style={{ textTransform: "capitalize" }}
+                >
+                  {e.type.name}
+                </Grid>
+              ))}
               <CustomChip
                 label="Height"
                 suffix={
@@ -82,16 +92,6 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
                     </Typography>
                   }
                 />
-              ))}
-              {pokemon.types.map((e) => (
-                <Grid
-                  key={e.type.name}
-                  item
-                  xs={12}
-                  style={{ textTransform: "capitalize" }}
-                >
-                  {e.type.name}
-                </Grid>
               ))}
             </Box>
           </Grid>
