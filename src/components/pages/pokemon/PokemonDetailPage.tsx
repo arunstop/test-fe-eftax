@@ -11,29 +11,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
 import CustomChip from "@/components/common/CustomChip";
+import Header from "../../common/Header.tsx";
+
 export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
   return (
     <Box display={"grid"}>
-      <AppBar position={"sticky"}>
-        <Toolbar sx={{ p: "0.5rem", gap: "1rem" }}>
-          <Link href="/">
-            <IconButton aria-label="back" size="medium">
-              <Icon icon="mdi:arrow-left" style={{ fontSize: "inherit" }} />
-            </IconButton>
-          </Link>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-            style={{ textTransform: "capitalize" }}
-          >
-            {pokemon.name}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
+      <Header>{pokemon.name}</Header>
       <Container>
         <Grid container spacing={2}>
           <Grid item xs={12} sx={{ placeItems: "center", display: "grid" }}>
@@ -156,11 +140,6 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
                 />
               ))}
             </Box>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
-            <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
-              <h2>Photos</h2>
-            </Grid>
           </Grid>
         </Grid>
       </Container>
