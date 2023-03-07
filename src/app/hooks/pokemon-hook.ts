@@ -14,24 +14,63 @@ export interface TPokemonListDisplay {
   url: string;
 }
 
+export interface TPagination {
+  total: number;
+  offset: number;
+  limit: number;
+}
+const PAGINATION_INIT = {
+  total: 0,
+  offset: 0,
+  limit: 20,
+};
 export function usePokemon() {
   const [pokemons, setPokemons] = useState<TPokemonList | null>();
+  const [pagination, setPagination] = useState(PAGINATION_INIT);
 
-  const loadData = async () => {
-    const loadPokemons = await fetch("https://pokeapi.co/api/v2/pokemon");
+  const loadData = async ({ limit, offset }: Omit<TPagination, "total">) => {
+    const url = new URL(
+      `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit${limit}`
+    );
+    const loadPokemons = await fetch(url);
     // proceed when ok only
     if (!loadPokemons.ok) return;
     // set the pokemons data
     const newPokemons = (await loadPokemons.json()) as unknown as TPokemonList;
     setPokemons(newPokemons);
+    // console.log({
+    //   total: newPokemons.count,
+    //   limit: Number.parseInt(url.searchParams.get("limit") || "0") || limit,
+    //   offset: Number.parseInt(url.searchParams.get("offset") || "0") || offset,
+    // });
+    setPagination({
+      total: newPokemons.count,
+      limit: Number.parseInt(url.searchParams.get("limit") || "0") || limit,
+      offset: Number.parseInt(url.searchParams.get("offset") || "0") || offset,
+    });
   };
 
+  const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPagination((curr) => {
+      const newOffset = (value - 1) * curr.limit;
+      loadData({ limit: curr.limit, offset: newOffset });
+      return {
+        ...curr,
+        offset: newOffset,
+      };
+    });
+  };
+
+  // init
   useEffect(() => {
-    loadData();
+    console.log("init");
+    loadData({ limit: pagination.limit, offset: pagination.offset });
     return () => {};
   }, []);
 
-  return { pokemons, setPokemons };
+  // onChange
+
+  return { pokemons, setPokemons, pagination, changePage };
 }
 
 export function usePokemonSearch() {
