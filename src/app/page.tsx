@@ -61,7 +61,7 @@ export default function Home() {
                   </Grid>
                 )}
                 {result.status === "success" && !!result.data && (
-                  <Grid key={item.name} item xs={6} sm={4} md={3} lg={2}>
+                  <Grid item xs={6} sm={4} md={3} lg={2}>
                     <a href={`/pokemon/${result.data.name}`}>
                       <ImageListItem>
                         <img
@@ -98,7 +98,7 @@ export default function Home() {
                 ) : (
                   pokemons.results.map((item, idx) => (
                     <Grid key={item.name} item xs={6} sm={4} md={3} lg={2}>
-                      <a href={`/pokemon/${idx + 1}`}>
+                      <a href={`/pokemon/${item.name}`}>
                         <ImageListItem>
                           <img
                             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
