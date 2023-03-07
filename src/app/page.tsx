@@ -126,7 +126,6 @@ export default function Home() {
                         </a>
                       </Grid>
                     ))}
-                    {JSON.stringify(pagination)}
                     {!!pagination.total && (
                       <Grid
                         item

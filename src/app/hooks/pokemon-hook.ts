@@ -1,6 +1,6 @@
 // import styles from './page.module.css'
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface TPokemonList {
   count: number;
@@ -28,38 +28,46 @@ export function usePokemon() {
   const [pokemons, setPokemons] = useState<TPokemonList | null>();
   const [pagination, setPagination] = useState(PAGINATION_INIT);
 
-  const loadData = async ({ limit, offset }: Omit<TPagination, "total">) => {
-    const url = new URL(
-      `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit${limit}`
-    );
-    const loadPokemons = await fetch(url);
-    // proceed when ok only
-    if (!loadPokemons.ok) return;
-    // set the pokemons data
-    const newPokemons = (await loadPokemons.json()) as unknown as TPokemonList;
-    setPokemons(newPokemons);
-    // console.log({
-    //   total: newPokemons.count,
-    //   limit: Number.parseInt(url.searchParams.get("limit") || "0") || limit,
-    //   offset: Number.parseInt(url.searchParams.get("offset") || "0") || offset,
-    // });
-    setPagination({
-      total: newPokemons.count,
-      limit: Number.parseInt(url.searchParams.get("limit") || "0") || limit,
-      offset: Number.parseInt(url.searchParams.get("offset") || "0") || offset,
-    });
-  };
+  const loadData = useCallback(
+    async ({ limit, offset }: Omit<TPagination, "total">) => {
+      const url = new URL(
+        `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit${limit}`
+      );
+      const loadPokemons = await fetch(url);
+      // proceed when ok only
+      if (!loadPokemons.ok) return;
+      // set the pokemons data
+      const newPokemons =
+        (await loadPokemons.json()) as unknown as TPokemonList;
+      setPokemons(newPokemons);
+      // console.log({
+      //   total: newPokemons.count,
+      //   limit: Number.parseInt(url.searchParams.get("limit") || "0") || limit,
+      //   offset: Number.parseInt(url.searchParams.get("offset") || "0") || offset,
+      // });
+      setPagination({
+        total: newPokemons.count,
+        limit: Number.parseInt(url.searchParams.get("limit") || "0") || limit,
+        offset:
+          Number.parseInt(url.searchParams.get("offset") || "0") || offset,
+      });
+    },
+    []
+  );
 
-  const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPagination((curr) => {
-      const newOffset = (value - 1) * curr.limit;
-      loadData({ limit: curr.limit, offset: newOffset });
-      return {
-        ...curr,
-        offset: newOffset,
-      };
-    });
-  };
+  const changePage = useCallback(
+    (event: React.ChangeEvent<unknown>, value: number) => {
+      setPagination((curr) => {
+        const newOffset = (value - 1) * curr.limit;
+        loadData({ limit: curr.limit, offset: newOffset });
+        return {
+          ...curr,
+          offset: newOffset,
+        };
+      });
+    },
+    [loadData]
+  );
 
   // init
   useEffect(() => {
@@ -83,7 +91,7 @@ export function usePokemonSearch() {
   });
   const [keyword, setKeyword] = useState("");
 
-  const searchPokemon = async (keyword: string) => {
+  const searchPokemon = useCallback(async (keyword: string) => {
     const kw = keyword.toLowerCase().trim();
     if (!kw)
       return setResult({
@@ -106,7 +114,7 @@ export function usePokemonSearch() {
         url: `/pokemon/${kw}`,
       },
     });
-  };
+  }, []);
 
   const clearSearch = () => {
     setResult({
