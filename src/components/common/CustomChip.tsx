@@ -1,27 +1,19 @@
 import { Chip, Typography } from "@mui/material";
+import { ReactNode } from "react";
 
 export default function CustomChip({
   label,
   suffix,
 }: {
   label: string;
-  suffix?: string;
+  suffix?: ReactNode;
 }) {
   return (
     <Chip
       label={label}
-      onDelete={() => {}}
-      deleteIcon={
-        !suffix ? undefined : (
-          <Typography
-            sx={{
-              color: (theme) => theme.palette.primary.main + " !important",
-            }}
-          >
-            suffix
-          </Typography>
-        )
-      }
+      onDelete={suffix ? () => {} : undefined}
+      style={{ textTransform: "capitalize" }}
+      deleteIcon={suffix || undefined}
     />
   );
 }
