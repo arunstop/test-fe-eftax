@@ -1,24 +1,8 @@
 // import styles from './page.module.css'
 
+import { TPagination, TPokemonList } from "@/types/pokemon";
 import { useCallback, useEffect, useState } from "react";
 
-export interface TPokemonList {
-  count: number;
-  next: string;
-  previous: null;
-  results: TPokemonListDisplay[];
-}
-
-export interface TPokemonListDisplay {
-  name: string;
-  url: string;
-}
-
-export interface TPagination {
-  total: number;
-  offset: number;
-  limit: number;
-}
 const PAGINATION_INIT = {
   total: 0,
   offset: 0,

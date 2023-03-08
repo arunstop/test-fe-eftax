@@ -1,3 +1,24 @@
+// Display
+
+export interface TPokemonList {
+  count: number;
+  next: string;
+  previous: null;
+  results: TPokemonListDisplay[];
+}
+
+export interface TPokemonListDisplay {
+  name: string;
+  url: string;
+}
+
+export interface TPagination {
+  total: number;
+  offset: number;
+  limit: number;
+}
+
+// Detail
 export interface TPokemon {
   abilities: TPokemonAbility[];
   base_experience: number;
