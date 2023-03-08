@@ -33,7 +33,7 @@ export function usePokemon() {
       const url = new URL(
         `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit${limit}`
       );
-      const loadPokemons = await fetch(url);
+      const loadPokemons = await fetch(url.toString());
       // proceed when ok only
       if (!loadPokemons.ok) return;
       // set the pokemons data
