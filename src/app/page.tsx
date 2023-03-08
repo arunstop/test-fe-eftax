@@ -87,6 +87,21 @@ export default function Home() {
                   Search
                 </Button>
               </FormControl>
+              {!!(result.status !== "init") && (
+                <FormControl
+                  fullWidth
+                  sx={{ display: { xs: "flex", md: "none" }, mt: "1rem" }}
+                >
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="error"
+                    onClick={() => clearSearch()}
+                  >
+                    Clear
+                  </Button>
+                </FormControl>
+              )}
               <Box display="flex" sx={{ gap: "1rem" }}>
                 <IconButton
                   type="submit"
@@ -98,7 +113,7 @@ export default function Home() {
                 </IconButton>
                 {!!(result.status !== "init") && (
                   <IconButton
-                    type="reset"
+                    type="button"
                     sx={{ display: { xs: "none", md: "flex" } }}
                     size="large"
                     color="error"
