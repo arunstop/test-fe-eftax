@@ -1,24 +1,12 @@
 // import styles from './page.module.css'
 
+import {
+  TPagination,
+  TPokemonList,
+  TPokemonListDisplay,
+} from "@/types/pokemon";
 import { useCallback, useEffect, useState } from "react";
 
-export interface TPokemonList {
-  count: number;
-  next: string;
-  previous: null;
-  results: TPokemonListDisplay[];
-}
-
-export interface TPokemonListDisplay {
-  name: string;
-  url: string;
-}
-
-export interface TPagination {
-  total: number;
-  offset: number;
-  limit: number;
-}
 const PAGINATION_INIT = {
   total: 0,
   offset: 0,
@@ -33,7 +21,7 @@ export function usePokemon() {
       const url = new URL(
         `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit${limit}`
       );
-      const loadPokemons = await fetch(url);
+      const loadPokemons = await fetch(url.toString());
       // proceed when ok only
       if (!loadPokemons.ok) return;
       // set the pokemons data
@@ -95,7 +83,7 @@ export function usePokemonSearch() {
     const kw = keyword.toLowerCase().trim();
     if (!kw)
       return setResult({
-        status: "empty",
+        status: "init",
         data: null,
       });
     const loadPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${kw}`);
