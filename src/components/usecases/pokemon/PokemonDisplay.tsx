@@ -3,14 +3,16 @@ import { Grid, ImageListItem, ImageListItemBar } from "@mui/material";
 
 export default function PokemonDisplay({
   name,
+  id,
   imgUrl,
 }: {
+  id?:string;
   name: string;
   imgUrl: string;
 }) {
   return (
     <Grid item xs={6} sm={4} md={3} lg={2}>
-      <a href={`/pokemon/${name}`}>
+      <a href={`/pokemon/${id||name}`}>
         <ImageListItem>
           <img
             src={imgUrl}
