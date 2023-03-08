@@ -13,6 +13,7 @@ import {
 import { Icon } from "@iconify/react";
 import CustomChip from "@/components/common/CustomChip";
 import Header from "@/components/common/Header";
+import PokemonDisplay from "@/components/usecases/pokemon/PokemonDisplay";
 
 export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
   return (
@@ -56,6 +57,7 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
                 suffix={
                   <Typography
                     sx={{
+                      fontWeight: "bold",
                       color: (theme) =>
                         theme.palette.primary.main + " !important",
                     }}
@@ -69,6 +71,7 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
                 suffix={
                   <Typography
                     sx={{
+                      fontWeight: "bold",
                       color: (theme) =>
                         theme.palette.primary.main + " !important",
                     }}
@@ -84,6 +87,7 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
                   suffix={
                     <Typography
                       sx={{
+                        fontWeight: "bold",
                         color: (theme) =>
                           theme.palette.primary.main + " !important",
                       }}
@@ -118,7 +122,7 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
               ))}
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
+          <Grid item xs={12}>
             <Grid
               item
               xs={12}
@@ -139,6 +143,24 @@ export default function PokemonDetailPage({ pokemon }: { pokemon: TPokemon }) {
                   label={e.move.name.replaceAll("-", " ")}
                 />
               ))}
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <PokemonDisplay
+                id={pokemon.id - 1 + ""}
+                name="Previous"
+                imgUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
+                  pokemon.id - 1
+                }.png`}
+              />
+              <PokemonDisplay
+                id={pokemon.id + 1 + ""}
+                name="Next"
+                imgUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
+                  pokemon.id + 1
+                }.png`}
+              />
             </Box>
           </Grid>
         </Grid>
