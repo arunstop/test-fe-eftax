@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { usePokemon, usePokemonSearch } from "./hooks/pokemon-hook";
+import PokemonDisplay from "@/components/usecases/pokemon/PokemonDisplay";
 
 export default function Home() {
   const { pokemons, pagination, changePage } = usePokemon();
@@ -62,27 +63,10 @@ export default function Home() {
                   </Grid>
                 )}
                 {result.status === "success" && !!result.data && (
-                  <Grid item xs={6} sm={4} md={3} lg={2}>
-                    <a href={`/pokemon/${result.data.name}`}>
-                      <ImageListItem>
-                        <img
-                          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${result.data.id}.png`}
-                          // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                          alt={result.data.name}
-                          loading="lazy"
-                          width={100}
-                          height={100}
-                          style={{ maxHeight: "100%", objectFit: "contain" }}
-                        />
-                        <ImageListItemBar
-                          title={result.data.name}
-                          sx={{
-                            textTransform: "capitalize",
-                          }}
-                        />
-                      </ImageListItem>
-                    </a>
-                  </Grid>
+                  <PokemonDisplay
+                    name={result.data.name}
+                    imgUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${result.data.id}.png`}
+                  />
                 )}
                 <Grid item xs={12}>
                   <Button onClick={() => clearSearch()} variant="contained">
@@ -99,32 +83,13 @@ export default function Home() {
                 ) : (
                   <>
                     {pokemons.results.map((item, idx) => (
-                      <Grid key={item.name} item xs={6} sm={4} md={3} lg={2}>
-                        <a href={`/pokemon/${item.name}`}>
-                          <ImageListItem>
-                            <img
-                              src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
-                                idx + pagination.offset + 1
-                              }.png`}
-                              // srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                              alt={item.name}
-                              loading="lazy"
-                              width={100}
-                              height={100}
-                              style={{
-                                maxHeight: "100%",
-                                objectFit: "contain",
-                              }}
-                            />
-                            <ImageListItemBar
-                              title={item.name}
-                              sx={{
-                                textTransform: "capitalize",
-                              }}
-                            />
-                          </ImageListItem>
-                        </a>
-                      </Grid>
+                      <PokemonDisplay
+                        key={item.name}
+                        name={item.name}
+                        imgUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${
+                          idx + pagination.offset + 1
+                        }.png`}
+                      />
                     ))}
                     {!!pagination.total && (
                       <Grid
