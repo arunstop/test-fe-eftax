@@ -15,6 +15,8 @@ import {
   Pagination,
   FormControl,
   Typography,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { usePokemon, usePokemonSearch } from "./hooks/pokemon-hook";
@@ -85,43 +87,48 @@ export default function Home() {
                   Search
                 </Button>
               </FormControl>
-              <IconButton
-                type="submit"
-                sx={{ display: { xs: "none", md: "flex" } }}
-                size="large"
-                color="primary"
-              >
-                <Icon icon="mdi:search" />
-              </IconButton>
+              <Box display="flex" sx={{ gap: "1rem" }}>
+                <IconButton
+                  type="submit"
+                  sx={{ display: { xs: "none", md: "flex" } }}
+                  size="large"
+                  color="primary"
+                >
+                  <Icon icon="mdi:search" />
+                </IconButton>
+                {!!(result.status !== "init") && (
+                  <IconButton
+                    type="reset"
+                    sx={{ display: { xs: "none", md: "flex" } }}
+                    size="large"
+                    color="error"
+                    onClick={() => clearSearch()}
+                  >
+                    <Icon icon="mdi:close-thick" />
+                  </IconButton>
+                )}
+              </Box>
             </Grid>
           </Grid>
         </Container>
         <Container>
           <Grid container spacing={2} my={"0px !important"}>
-            {result.status !== "init" ? (
-              <>
-                {result.status === "empty" && (
-                  <Grid item xs={12}>
-                    Not found..
-                  </Grid>
-                )}
-                {result.status === "success" && !!result.data && (
-                  <PokemonDisplay
-                    name={result.data.name}
-                    imgUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${result.data.id}.png`}
-                  />
-                )}
-                <Grid item xs={12}>
-                  <Button onClick={() => clearSearch()} variant="contained">
-                    Reset
-                  </Button>
-                </Grid>
-              </>
-            ) : (
+            {result.status === "init" ? (
               <>
                 {!pokemons ? (
                   <Grid item xs={12}>
-                    Loading pokemon...
+                    <Alert severity="primary" icon={false}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "2rem",
+                        }}
+                      >
+                        <CircularProgress color="primary" />
+                        <Box>Loading pokemons...</Box>
+                      </Box>
+                    </Alert>
                   </Grid>
                 ) : (
                   <>
@@ -148,6 +155,22 @@ export default function Home() {
                       </Grid>
                     )}
                   </>
+                )}
+              </>
+            ) : (
+              <>
+                {result.status === "empty" && (
+                  <Grid item xs={12}>
+                    <Alert severity="warning">
+                      Could not found any pokemon named `{keyword}`
+                    </Alert>
+                  </Grid>
+                )}
+                {result.status === "success" && !!result.data && (
+                  <PokemonDisplay
+                    name={result.data.name}
+                    imgUrl={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${result.data.id}.png`}
+                  />
                 )}
               </>
             )}
