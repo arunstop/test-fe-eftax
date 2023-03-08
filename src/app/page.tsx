@@ -5,6 +5,7 @@ import {
   Box,
   Stack,
   Button,
+  IconButton,
   Container,
   ImageList,
   ImageListItem,
@@ -12,10 +13,13 @@ import {
   TextField,
   Grid,
   Pagination,
+  FormControl,
+  Typography,
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
 import { usePokemon, usePokemonSearch } from "./hooks/pokemon-hook";
 import PokemonDisplay from "@/components/usecases/pokemon/PokemonDisplay";
+import { Icon } from "@iconify/react";
 
 export default function Home() {
   const { pokemons, pagination, changePage } = usePokemon();
@@ -41,17 +45,56 @@ export default function Home() {
         }}
       >
         <Container component={"form"} onSubmit={handleSubmit}>
-          <TextField
-            id="outlined-basic"
-            name="keyword"
-            label="Search Pokemon..."
-            variant="outlined"
-            value={keyword}
-            onChange={(ev) => setKeyword(ev.target.value)}
-          />
-          <Button type="submit" variant="contained">
-            Search
-          </Button>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography
+                sx={{
+                  textAlign: { xs: "center", md: "left" },
+                  fontSize: {
+                    xs: "1.5rem",
+                    sm: "2rem",
+                    md: "2.5rem",
+                    lg: "3rem",
+                    xl: "4rem",
+                  },
+                }}
+              >
+                Pokemon Test EFTAX{" "}
+                <Icon icon="gg:pokemon" style={{ verticalAlign: "text-top" }} />{" "}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth>
+                <TextField
+                  id="outlined-basic"
+                  name="keyword"
+                  label="Search Pokemon..."
+                  variant="outlined"
+                  value={keyword}
+                  onChange={(ev) => setKeyword(ev.target.value)}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <FormControl
+                fullWidth
+                sx={{ display: { xs: "flex", md: "none" } }}
+              >
+                <Button type="submit" variant="contained">
+                  Search
+                </Button>
+              </FormControl>
+              <IconButton
+                type="submit"
+                sx={{ display: { xs: "none", md: "flex" } }}
+                size="large"
+                color="primary"
+              >
+                <Icon icon="mdi:search" />
+              </IconButton>
+            </Grid>
+          </Grid>
         </Container>
         <Container>
           <Grid container spacing={2} my={"0px !important"}>
