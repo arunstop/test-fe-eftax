@@ -149,7 +149,11 @@ export default function Home() {
                       >
                         <Pagination
                           count={Math.ceil(pagination.total / pagination.limit)}
-                          defaultPage={Math.ceil(0 / 20 + 1)}
+                          defaultPage={9}
+                          page={
+                            Math.ceil(pagination.offset / pagination.limit) + 1
+                          }
+                          color="primary"
                           onChange={changePage}
                         />
                       </Grid>
