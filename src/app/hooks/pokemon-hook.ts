@@ -1,6 +1,10 @@
 // import styles from './page.module.css'
 
-import { TPagination, TPokemonList } from "@/types/pokemon";
+import {
+  TPagination,
+  TPokemonList,
+  TPokemonListDisplay,
+} from "@/types/pokemon";
 import { useCallback, useEffect, useState } from "react";
 
 const PAGINATION_INIT = {
@@ -79,7 +83,7 @@ export function usePokemonSearch() {
     const kw = keyword.toLowerCase().trim();
     if (!kw)
       return setResult({
-        status: "empty",
+        status: "init",
         data: null,
       });
     const loadPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${kw}`);
