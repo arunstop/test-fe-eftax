@@ -132,7 +132,7 @@ export default function Home() {
               <>
                 {!pokemons ? (
                   <Grid item xs={12}>
-                    <Alert severity="primary" icon={false}>
+                    <Alert severity="info" icon={false}>
                       <Box
                         sx={{
                           display: "flex",
