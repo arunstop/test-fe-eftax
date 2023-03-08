@@ -19,7 +19,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { FormEvent, useEffect, useState } from "react";
-import { usePokemon, usePokemonSearch } from "./hooks/pokemon-hook";
+import { usePokemon, usePokemonSearch } from "../hooks/pokemon-hook";
 import PokemonDisplay from "@/components/usecases/pokemon/PokemonDisplay";
 import { Icon } from "@iconify/react";
 
